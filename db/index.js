@@ -1,0 +1,1 @@
+module.exports = require('./pgsql') // supporting only one type of database (which is Postgres)
