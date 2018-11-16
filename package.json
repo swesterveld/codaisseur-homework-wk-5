@@ -6,7 +6,11 @@
   "author": "Sil Westerveld <git@silwesterveld.com>",
   "license": "MIT",
   "dependencies": {
+    "express": "^4.16.4",
     "pg": "6",
     "sequelize": "^4.41.2"
+  },
+  "scripts": {
+    "start": "node ."
   }
 }
