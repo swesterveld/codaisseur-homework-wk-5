@@ -1,0 +1,12 @@
+{
+  "name": "codaisseur-homework-wk-5",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:swesterveld/codaisseur-homework-wk-5.git",
+  "author": "Sil Westerveld <git@silwesterveld.com>",
+  "license": "MIT",
+  "dependencies": {
+    "pg": "6",
+    "sequelize": "^4.41.2"
+  }
+}
