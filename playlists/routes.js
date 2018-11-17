@@ -22,6 +22,15 @@ router.post('/playlists', (req, res, next) => {
 })
 
 // GET /playlists -- retrieve all user's playlists
+router.get('/playlists', (req, res, next) => {
+  Playlist.findAll()
+    .then(playlists => {
+      res.send({
+        playlists
+      })
+    })
+    .catch(err => next(err))
+})
 
 // GET /playlists/:id -- get a single of user's playlists, including its songs
 
