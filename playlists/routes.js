@@ -1,5 +1,7 @@
 const { Router } = require('express')
+
 const Playlist = require('./model')
+const Song = require('../songs/model')
 
 const router = new Router()
 
@@ -32,6 +34,19 @@ router.get('/playlists', (req, res, next) => {
 })
 
 // GET /playlists/:id -- get a single of user's playlists, including its songs
+router.get('/playlists/:id', (req, res, next) => {
+  Playlist
+    .findByPk(req.params.id, {include: [Song]})
+    .then(playlist => {
+      if (!playlist) {
+        return res.status(404).send({
+          message: 'Playlist does not exist'
+        })
+      }
+      return res.send(playlist)
+    })
+    .catch(err => next(err))
+})
 
 // DELETE /playlists/:id -- delete a user's playlist, including its songs
 
