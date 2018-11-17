@@ -56,7 +56,7 @@ router.delete('/playlists/:id', (req, res, next) => {
         })
       }
       return playlist.destroy()
-        .then(() => res.send({
+        .then(() => res.status(204).send({
           message: 'Playlist has been deleted'
         }))
     })
