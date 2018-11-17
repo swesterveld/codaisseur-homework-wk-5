@@ -1,4 +1,5 @@
 const Sequelize = require('sequelize')
+
 const sequelize = require('../db')
 
 const Song = sequelize.define('songs', {
