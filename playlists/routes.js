@@ -7,7 +7,6 @@ const router = new Router()
 
 // POST /playlists -- create a user's playlist
 router.post('/playlists', (req, res, next) => {
-  console.log('res: ', res)
   Playlist
     .create(req.body)
     .then(playlist => {
