@@ -2,14 +2,19 @@ const { Router } = require('express')
 
 const Playlist = require('./model')
 const Song = require('../songs/model')
+const auth = require('../auth/middelware')
 
 const router = new Router()
 
 // TODO: implement authn and authz on routes required for Playlist
 
 // POST /playlists -- create a user's playlist
-router.post('/playlists', (req, res, next) => {
-  Playlist.create(req.body)
+router.post('/playlists', auth, (req, res, next) => {
+  const playlist = {
+    name: req.body.name,
+    userId: req.user.id
+  }
+  Playlist.create(playlist)
     .then(playlist => {
       if (!playlist) {
         return res.status(404).send({
