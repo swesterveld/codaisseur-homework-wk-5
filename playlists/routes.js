@@ -27,10 +27,11 @@ router.post('/playlists', auth, (req, res, next) => {
 })
 
 // GET /playlists -- retrieve all user's playlists
-router.get('/playlists', (req, res, next) => {
-  Playlist.findAll()
+router.get('/playlists', auth, (req, res, next) => {
+  Playlist.findAll({where: {userId: req.user.id}})
     .then(playlists => {
-      res.send({
+      let rc = playlists.length ? 200 : 404
+      res.status(rc).send({
         playlists
       })
     })
