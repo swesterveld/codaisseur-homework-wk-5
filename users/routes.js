@@ -39,6 +39,7 @@ router.post('/users', [
           message: '(422) Unprocessable Entity'
         })
       }
+      user.password = null // hide password from JSON response
       return res.status(201).send(user)
     })
     .catch(err => {
