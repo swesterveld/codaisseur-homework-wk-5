@@ -8,8 +8,6 @@ const auth = require('../auth/middelware')
 const router = new Router()
 const { and } = Sequelize.Op
 
-// TODO: implement authn and authz on routes required for Playlist
-
 // POST /playlists -- create a user's playlist
 router.post('/playlists', auth, (req, res, next) => {
   const playlist = {
