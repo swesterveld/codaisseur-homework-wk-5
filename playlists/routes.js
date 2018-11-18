@@ -1,10 +1,12 @@
 const { Router } = require('express')
+const Sequelize = require('sequelize')
 
 const Playlist = require('./model')
 const Song = require('../songs/model')
 const auth = require('../auth/middelware')
 
 const router = new Router()
+const { and } = Sequelize.Op
 
 // TODO: implement authn and authz on routes required for Playlist
 
@@ -39,15 +41,23 @@ router.get('/playlists', auth, (req, res, next) => {
 })
 
 // GET /playlists/:id -- get a single of user's playlists, including its songs
-router.get('/playlists/:id', (req, res, next) => {
-  Playlist.findByPk(req.params.id, {include: [Song]})
+router.get('/playlists/:id', auth, (req, res, next) => {
+  Playlist.findOne({
+    include: [Song],
+    where: {
+      [and]: [
+        {id:req.params.id},
+        {userId: req.user.id}
+      ]
+    }
+  })
     .then(playlist => {
       if (!playlist) {
         return res.status(404).send({
           message: 'Playlist does not exist'
         })
       }
-      return res.send(playlist)
+      return res.status(200).send(playlist)
     })
     .catch(err => next(err))
 })
