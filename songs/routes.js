@@ -1,18 +1,25 @@
 const { Router } = require('express')
+const Sequelize = require('sequelize')
 
 const Song = require('./model')
 const Playlist = require('../playlists/model')
+const auth = require('../auth/middelware')
 
 const router = new Router()
+const { and } = Sequelize.Op
 
 // TODO: implement authn and authz on routes required for Song
 
 // POST /playlists/:id/songs -- add song to a playlist
-router.post('/playlists/:id/songs', (req, res, next) => {
-  // TODO: double-check if this is the right way to sanitize input
-  let playlistId = Number(req.params.id) || null
-
-  Playlist.findByPk(playlistId)
+router.post('/playlists/:id/songs', auth, (req, res, next) => {
+  Playlist.findOne({
+    where: {
+      [and]: [
+        {id:req.params.id},
+        {userId: req.user.id}
+      ]
+    }
+  })
     .then(playlist => {
       if (!playlist) {
         return res.status(404).send({
