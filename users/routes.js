@@ -1,3 +1,4 @@
+const bcrypt = require('bcrypt')
 const { Router } = require('express')
 const { check, validationResult } = require('express-validator/check')
 
@@ -26,7 +27,12 @@ router.post('/users', [
     })
 
   // create user when input has passed validation
-  User.create(req.body)
+  const user = {
+    email: email,
+    password: bcrypt.hashSync(password, 10)
+  }
+
+  User.create(user)
     .then(user => {
       if (!user) {
         return res.status(422).send({
