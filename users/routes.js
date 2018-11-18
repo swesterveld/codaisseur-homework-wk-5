@@ -1,11 +1,22 @@
 const { Router } = require('express')
+const { check, validationResult } = require('express-validator/check')
 
 const User = require('./model')
 
 const router = new Router()
 
 // POST /users -- sign up user with email and password
-router.post('/users', (req, res, next) => {
+router.post('/users', [
+  check('email').isEmail(),
+  check('password').isLength({min: 6})
+], (req, res, next) => {
+  const errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    return res.status(422).send({
+      errors: errors.array()
+    })
+  }
+
   const {email, password, password_confirmation} = req.body
 
   // validate passwords for match
