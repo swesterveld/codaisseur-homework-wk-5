@@ -63,8 +63,15 @@ router.get('/playlists/:id', auth, (req, res, next) => {
 })
 
 // DELETE /playlists/:id -- delete a user's playlist, including its songs
-router.delete('/playlists/:id', (req, res, next) => {
-  Playlist.findByPk(req.params.id)
+router.delete('/playlists/:id', auth, (req, res, next) => {
+  Playlist.findOne({
+    where: {
+      [and]: [
+        {id:req.params.id},
+        {userId: req.user.id}
+      ]
+    }
+  })
     .then(playlist => {
       if (!playlist) {
         return res.status(404).send({
@@ -73,7 +80,7 @@ router.delete('/playlists/:id', (req, res, next) => {
       }
       return playlist.destroy()
         .then(() => res.status(204).send({
-          message: 'Playlist has been deleted'
+          message: 'Playlist and all of its songs have been deleted'
         }))
     })
     .catch(err => next(err))
