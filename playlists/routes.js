@@ -3,7 +3,7 @@ const Sequelize = require('sequelize')
 
 const Playlist = require('./model')
 const Song = require('../songs/model')
-const auth = require('../auth/middelware')
+const auth = require('../auth/middleware')
 
 const router = new Router()
 const { and } = Sequelize.Op
