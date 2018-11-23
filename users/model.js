@@ -2,8 +2,6 @@ const Sequelize = require('sequelize')
 
 const sequelize = require('../db')
 
-const Playlist = require('../playlists/model')
-
 const User = sequelize.define('users', {
   email: {
     type: Sequelize.STRING,
