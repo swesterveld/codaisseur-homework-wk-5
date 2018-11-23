@@ -18,6 +18,4 @@ const User = sequelize.define('users', {
   tableName: 'users'
 })
 
-User.hasMany(Playlist, {onDelete: 'cascade'})
-
 module.exports = User
