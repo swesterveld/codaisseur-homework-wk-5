@@ -10,6 +10,13 @@ const router = new Router()
 router.post('/tokens', (req, res, next) => {
   const {email, password} = req.body
 
+  const unauthorized = (res) => {
+    res.status(401)
+      .json({
+        message: 'Invalid login credentials'
+      })
+  }
+
   if(!email || !password) {
     res.status(400).send({
       message: 'Please supply a valid email and password'
@@ -24,23 +31,20 @@ router.post('/tokens', (req, res, next) => {
     .then(user => {
       // check e-mail
       if (!user) {
-        res.status(401).send({
-          message: 'Invalid email or password'
-        })
+        return unauthorized(res)
       }
 
       // check password
-      if (bcrypt.compare(password, user.password)) {
-        res.send({
-          jwt: toJWT({userId: user.id})
+      return bcrypt.compare(password, user.password)
+        .then(match => {
+          if (!match) {
+            return unauthorized(res)
+          }
+          return res.status(200).send({
+            jwt: toJWT({userId: user.id})
+          })
         })
-      }
-
-      else {
-        res.status(401).send({
-          message: 'Invalid email or password'
-        })
-      }
+        .catch(() => unauthorized(res))
     })
     .catch(err => {
       console.error(err)
