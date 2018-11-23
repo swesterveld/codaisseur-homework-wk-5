@@ -24,8 +24,8 @@ router.post('/tokens', (req, res, next) => {
     .then(user => {
       // check e-mail
       if (!user) {
-        res.status(400).send({
-          message: 'Invalid email'
+        res.status(401).send({
+          message: 'Invalid email or password'
         })
       }
 
@@ -37,8 +37,8 @@ router.post('/tokens', (req, res, next) => {
       }
 
       else {
-        res.status(400).send({
-          message: 'Password incorrect'
+        res.status(401).send({
+          message: 'Invalid email or password'
         })
       }
     })
