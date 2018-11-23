@@ -30,7 +30,7 @@ router.post('/tokens', (req, res, next) => {
       }
 
       // check password
-      if (bcrypt.compareSync(password, user.password)) {
+      if (bcrypt.compare(password, user.password)) {
         res.send({
           jwt: toJWT({userId: user.id})
         })
